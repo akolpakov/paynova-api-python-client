@@ -10,7 +10,37 @@ pip install paynova-api-python-client
 ```
 
 # Usage
-TODO
+Create Paynova client:
+```python
+from paynova_api_python_client import Paynova
+client = Paynova('<MERCHANT ID>', '<API Password>')
+```
+
+Call service
+```python
+response = client.create_order({
+    'orderNumber': '1234',
+    'currencyCode': 'EUR',
+    'totalAmount': 10
+})
+```
+See [create simple order example](./examples/create_simple_order.py)
+
+### Paynova requester settings
+* **live** - If live = True live endpoint will be used
+
+### Errors
+If Paynova return an error **PaynovaException** will be raised
+```python
+from paynova_api_python_client import PaynovaException
+
+try:
+    response = client.create_order()
+except PaynovaException as e:
+    # process exception
+    # e.errorNumber, e.statusKey, e.statusMessage, e.errors
+    pass
+```
 
 # Tests
 At first make sure that you are in virtualenv.

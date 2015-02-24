@@ -1,4 +1,14 @@
-from urlparse import urljoin
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# This file is part of paynova-api-python-client.
+# https://github.com/akolpakov/paynova-api-python-client
+
+# Licensed under the MIT license:
+# http://www.opensource.org/licenses/MIT-license
+# Copyright (c) 2015, Andrey Kolpakov <aakolpakov@gmail.com>
+
+from .exceptions import PaynovaException
 
 import requests
 import json
@@ -13,14 +23,14 @@ class Paynova(object):
         Docs: http://docs.paynova.com/display/API/Paynova+API+Home
     """
 
-    def __init__(self, username, password, debug=False, endpoint=None):
+    def __init__(self, username, password, live=False, endpoint=None):
         """
             If :debug = True - test endpoint will be used
             :endpoint - custom endpoint
         """
         self.username = username
         self.password = password
-        self.debug = debug
+        self.live = live
         self.endpoint = endpoint or self.default_endpoint()
 
     def get_url(self, resource, params=None):
@@ -36,12 +46,12 @@ class Paynova(object):
         """
             Live or sandbox endpoint
         """
-        if self.debug:
-            return 'https://testpaygate.paynova.com'
-        else:
+        if self.live:
             return 'https://paygate.paynova.com'
+        else:
+            return 'https://testpaygate.paynova.com'
 
-    def request(self, method, resource, params):
+    def request(self, method, resource, params=None):
         """
             Make request to the server and parse response
         """
@@ -54,11 +64,13 @@ class Paynova(object):
             'Content-Type': 'application/json'
         }
 
+        auth = requests.auth.HTTPBasicAuth(self.username, self.password)
+
         # request
 
         log.info('Request to %s. Data: %s' % (url, params))
 
-        response = requests.request(method, url, data=json.dumps(params), headers=headers)
+        response = requests.request(method, url, data=json.dumps(params), headers=headers, auth=auth)
         response.raise_for_status()
 
         # response
@@ -66,11 +78,18 @@ class Paynova(object):
         log.info('Response from %s: %s' % (url, response.text))
         content = response.json()
 
+        self.parse_status(content.get('status'))
+
         return content
 
-    # def create_order(self, params):
-    #     """
-    #         Create order
-    #         Docs: http://docs.paynova.com/display/API/Create+Order
-    #     """
-    #     self.request('POST', 'orders/create', params)
+    @staticmethod
+    def parse_status(status):
+        if status and not status.get('isSuccess', False):
+            raise PaynovaException(status)
+
+    def create_order(self, params):
+        """
+            Create order
+            Docs: http://docs.paynova.com/display/API/Create+Order
+        """
+        return self.request('POST', 'orders/create', params)
