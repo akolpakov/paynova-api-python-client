@@ -12,4 +12,6 @@ from unittest import TestCase as PythonTestCase
 
 
 class TestCase(PythonTestCase):
+    MERCHANT_ID = 'test_merchant_id'
+    MERCHANT_PASSWORD = 'test_merchant_password'
     pass

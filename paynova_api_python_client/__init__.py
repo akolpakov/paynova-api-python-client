@@ -9,3 +9,4 @@
 # Copyright (c) 2015, Andrey Kolpakov <aakolpakov@gmail.com>
 
 from paynova_api_python_client.version import __version__  # NOQA
+from paynova_api_python_client.paynova import Paynova
