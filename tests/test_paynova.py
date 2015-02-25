@@ -78,7 +78,20 @@ def paynova_mock(url, request):
                 'errorNumber': 0,
                 'statusKey': 'SUCCESS',
             },
-            'orderId': '70bf60e7-cc9b-4321-bb32-a449010f45a5'
+            'orderId': TestCase.ORDER_ID
+        }
+
+    # test init payment
+
+    elif url[2] == '/api/orders/0001/initializePayment':
+        content = {
+            'status': {
+                'isSuccess': True,
+                'errorNumber': 0,
+                'statusKey': 'SUCCESS',
+            },
+            'sessionId': TestCase.ORDER_SESSION_ID,
+            'url': TestCase.ORDER_URL
         }
 
     return {'status_code': 200, 'content': content}
@@ -109,6 +122,13 @@ class PaynovaTestCase(TestCase):
         expect(self.paynova.get_url('test/res')).to_equal('https://testpaygate.paynova.com/api/test/res')
         expect(self.paynova.get_url('/test/res')).to_equal('https://testpaygate.paynova.com/api/test/res')
         expect(self.paynova.get_url('/test/res/')).to_equal('https://testpaygate.paynova.com/api/test/res')
+
+    def test_get_url_with_param(self):
+        params = {
+            'orderId': 123
+        }
+        expect(self.paynova.get_url('test/{orderId}', params=params)).to_equal('https://testpaygate.paynova.com/api/test/123')
+        expect(self.paynova.get_url('test/{noParam}', params=params)).to_equal('https://testpaygate.paynova.com/api/test')
 
     def test_request(self):
         with HTTMock(paynova_mock):
@@ -141,8 +161,19 @@ class PaynovaTestCase(TestCase):
     def test_create_order(self):
         with HTTMock(paynova_mock):
             params = {
-                'orderNumber': '123'
+                'orderNumber': '0001'
             }
             response = self.paynova.create_order(params)
             expect(response).not_to_be_null()
+            expect(response.get('orderId')).to_equal(TestCase.ORDER_ID)
+
+    def test_initial_payment(self):
+        with HTTMock(paynova_mock):
+            params = {
+                'orderId': '0001'
+            }
+            response = self.paynova.initialize_payment(params)
+            expect(response).not_to_be_null()
+            expect(response.get('sessionId')).to_equal(TestCase.ORDER_SESSION_ID)
+            expect(response.get('url')).to_equal(TestCase.ORDER_URL)
 

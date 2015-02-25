@@ -29,6 +29,7 @@ response = client.create_order({
 ### Examples
 * [Create simple order](./examples/create_simple_order.py)
 * [Create detailed order](./examples/create_detailed_order.py)
+* [Initital payment](./examples/initial_payment.py)
 
 ### Paynova requester settings
 * **live** - If *live = True* live endpoint will be used

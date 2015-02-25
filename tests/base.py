@@ -14,4 +14,6 @@ from unittest import TestCase as PythonTestCase
 class TestCase(PythonTestCase):
     MERCHANT_ID = 'test_merchant_id'
     MERCHANT_PASSWORD = 'test_merchant_password'
-    pass
+    ORDER_ID = '70bf60e7-cc9b-4321-bb32-a449010f45a5'
+    ORDER_SESSION_ID = 'test-session-id'
+    ORDER_URL = 'http://test.com'

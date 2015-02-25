@@ -12,6 +12,7 @@ from .exceptions import PaynovaException
 
 import requests
 import json
+import re
 import logging
 
 log = logging.getLogger(__name__)
@@ -38,8 +39,15 @@ class Paynova(object):
             Generate url for request
         """
 
-        parts = (self.endpoint, '/api/', resource)
+        # replace placeholders
 
+        pattern = r'\{(.+?)\}'
+
+        resource = re.sub(pattern, lambda t: str(params.get(t.group(1), '')), resource)
+
+        # build url
+
+        parts = (self.endpoint, '/api/', resource)
         return '/'.join(map(lambda x: str(x).strip('/'), parts))
 
     def default_endpoint(self):
@@ -93,3 +101,10 @@ class Paynova(object):
             Docs: http://docs.paynova.com/display/API/Create+Order
         """
         return self.request('POST', 'orders/create', params)
+
+    def initialize_payment(self, params):
+        """
+            Initialize Payment
+            Docs: http://docs.paynova.com/display/API/Initialize+Payment
+        """
+        return self.request('POST', 'orders/{orderId}/initializePayment', params)
