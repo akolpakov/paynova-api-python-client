@@ -15,7 +15,6 @@ from tests.base import TestCase
 from httmock import all_requests, HTTMock
 from requests.exceptions import HTTPError
 
-
 import base64
 import json
 import sys
@@ -68,31 +67,6 @@ def paynova_mock(url, request):
         content = {'status': {
             'isSuccess': True,
         }}
-
-    # test create order
-
-    elif url[2] == '/api/orders/create':
-        content = {
-            'status': {
-                'isSuccess': True,
-                'errorNumber': 0,
-                'statusKey': 'SUCCESS',
-            },
-            'orderId': TestCase.ORDER_ID
-        }
-
-    # test init payment
-
-    elif url[2] == '/api/orders/0001/initializePayment':
-        content = {
-            'status': {
-                'isSuccess': True,
-                'errorNumber': 0,
-                'statusKey': 'SUCCESS',
-            },
-            'sessionId': TestCase.ORDER_SESSION_ID,
-            'url': TestCase.ORDER_URL
-        }
 
     return {'status_code': 200, 'content': content}
 
@@ -157,23 +131,3 @@ class PaynovaTestCase(TestCase):
 
             response = self.paynova.request('POST', 'status/success')
             expect(response).not_to_be_null()
-
-    def test_create_order(self):
-        with HTTMock(paynova_mock):
-            params = {
-                'orderNumber': '0001'
-            }
-            response = self.paynova.create_order(params)
-            expect(response).not_to_be_null()
-            expect(response.get('orderId')).to_equal(TestCase.ORDER_ID)
-
-    def test_initial_payment(self):
-        with HTTMock(paynova_mock):
-            params = {
-                'orderId': '0001'
-            }
-            response = self.paynova.initialize_payment(params)
-            expect(response).not_to_be_null()
-            expect(response.get('sessionId')).to_equal(TestCase.ORDER_SESSION_ID)
-            expect(response.get('url')).to_equal(TestCase.ORDER_URL)
-

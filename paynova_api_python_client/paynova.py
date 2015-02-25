@@ -108,3 +108,10 @@ class Paynova(object):
             Docs: http://docs.paynova.com/display/API/Initialize+Payment
         """
         return self.request('POST', 'orders/{orderId}/initializePayment', params)
+
+    def finalize_authorization(self, params):
+        """
+            Finalize Authorization
+            Docs: http://docs.paynova.com/display/API/Finalize+Authorization
+        """
+        return self.request('POST', 'transactions/{transactionId}/finalize/{totalAmount}', params)
