@@ -15,33 +15,44 @@ from tests.base import TestCase
 from httmock import all_requests, HTTMock
 from requests.exceptions import HTTPError
 
+
 import base64
 import json
+import sys
+
+_ver = sys.version_info
 
 
 @all_requests
 def paynova_mock(url, request):
-    response = None
+    content = None
 
     # simple test
 
     if url[2] == '/api/return/request':
-        response = request.body
+        content = json.loads(request.body)
 
     # test basic authentication
 
     elif url[2] == '/api/auth/check':
         auth = request.headers.get('authorization')
-        auth_string = 'Basic %s' % base64.b64encode('%s:%s' % (TestCase.MERCHANT_ID, TestCase.MERCHANT_PASSWORD))
+
+        if _ver >= (3, 0):
+            username_password = '%s:%s' % (TestCase.MERCHANT_ID, TestCase.MERCHANT_PASSWORD)
+            username_password = base64.b64encode(username_password.encode('ascii'))
+            auth_string = 'Basic %s' % username_password.decode('ascii')
+        else:
+            auth_string = 'Basic %s' % base64.b64encode('%s:%s' % (TestCase.MERCHANT_ID, TestCase.MERCHANT_PASSWORD))
+
         if auth == auth_string:
-            response = json.dumps({'result': 'success'})
+            content = {'result': 'success'}
         else:
             return {'status_code': 401, 'reason': 'No credentials were provided'}
 
     # test status
 
     elif url[2] == '/api/status/error':
-        response = json.dumps({'status': {
+        content = {'status': {
             'isSuccess': False,
             'errorNumber': -2,
             'statusKey': 'VALIDATION_ERROR',
@@ -51,26 +62,26 @@ def paynova_mock(url, request):
                 'fieldName': 'OrderNumber',
                 'message': '\'Order Number\' must be between 4 and 50 characters. You entered 0 characters.',
            }]
-        }})
+        }}
 
     elif url[2] == '/api/status/success':
-        response = json.dumps({'status': {
+        content = {'status': {
             'isSuccess': True,
-        }})
+        }}
 
     # test create order
 
     elif url[2] == '/api/orders/create':
-        response = json.dumps({
+        content = {
             'status': {
                 'isSuccess': True,
                 'errorNumber': 0,
                 'statusKey': 'SUCCESS',
             },
             'orderId': '70bf60e7-cc9b-4321-bb32-a449010f45a5'
-        })
+        }
 
-    return response
+    return {'status_code': 200, 'content': content}
 
 
 class PaynovaTestCase(TestCase):

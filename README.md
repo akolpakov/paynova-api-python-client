@@ -8,6 +8,7 @@ This is an overview of the Paynova API Python Client using [Paynova REST API][] 
 ```
 pip install paynova-api-python-client
 ```
+Python 2.7, Python 3.4, PyPy are supported
 
 # Usage
 Create Paynova client:
@@ -24,13 +25,15 @@ response = client.create_order({
     'totalAmount': 10
 })
 ```
-See [create simple order example](./examples/create_simple_order.py)
+
+### Examples
+* ["Create Simple Order"](./examples/create_simple_order.py) example
 
 ### Paynova requester settings
-* **live** - If live = True live endpoint will be used
+* **live** - If *live = True* live endpoint will be used
 
 ### Errors
-If Paynova return an error **PaynovaException** will be raised
+If Paynova return an error, **PaynovaException** will be raised
 ```python
 from paynova_api_python_client import PaynovaException
 

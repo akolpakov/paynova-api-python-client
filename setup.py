@@ -9,7 +9,6 @@
 # Copyright (c) 2015, Andrey Kolpakov <aakolpakov@gmail.com>
 
 from setuptools import setup, find_packages
-from paynova_api_python_client import __version__
 
 tests_require = [
     'mock',
@@ -26,7 +25,7 @@ tests_require = [
 
 setup(
     name='paynova-api-python-client',
-    version=__version__,
+    version='0.1.0',
     description='Python client for Paynova\'s API.',
     long_description='''
 Python client for Paynova's API.
