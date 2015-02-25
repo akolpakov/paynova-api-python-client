@@ -9,9 +9,10 @@ client = Paynova('<MERCHANT ID>', '<API Password>')
 
 try:
     # create order
+    # For more information about fields, see http://docs.paynova.com/display/API/Create+Order
 
     response = client.create_order({
-        'orderNumber': '1234',
+        'orderNumber': 'order-id-0001',
         'currencyCode': 'EUR',
         'totalAmount': 10
     })

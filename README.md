@@ -20,14 +20,15 @@ client = Paynova('<MERCHANT ID>', '<API Password>')
 Call service
 ```python
 response = client.create_order({
-    'orderNumber': '1234',
+    'orderNumber': 'order-id-0001',
     'currencyCode': 'EUR',
     'totalAmount': 10
 })
 ```
 
 ### Examples
-* ["Create Simple Order"](./examples/create_simple_order.py) example
+* [Create simple order](./examples/create_simple_order.py)
+* [Create detailed order](./examples/create_detailed_order.py)
 
 ### Paynova requester settings
 * **live** - If *live = True* live endpoint will be used
