@@ -72,6 +72,23 @@ def paynova_mock(url, request):
             'batchId': 'batch'
         })
 
+    # get customer profile
+
+    elif url[2] == '/api/customerprofiles/1':
+        return success({
+            'profileId': '1'
+        })
+
+    # remove customer profile
+
+    elif url[2] == '/api/customerprofiles/1' and request.method == 'DELETE':
+        return success()
+
+    # remove customer profile card
+
+    elif url[2] == '/api/customerprofiles/1/cards/1' and request.method == 'DELETE':
+        return success()
+
     return {'status_code': 404}
 
 
@@ -132,3 +149,28 @@ class PaynovaServicesTestCase(TestCase):
             expect(response.get('transactionId')).to_equal('0001')
             expect(response.get('batchId')).to_equal('batch')
 
+    def test_get_customer_profile(self):
+        with HTTMock(paynova_mock):
+            params = {
+                'profileId': '1'
+            }
+            response = self.paynova.get_customer_profile(params)
+            expect(response).not_to_be_null()
+            expect(response.get('profileId')).to_equal('1')
+
+    def test_remove_customer_profile(self):
+        with HTTMock(paynova_mock):
+            params = {
+                'profileId': '1'
+            }
+            response = self.paynova.remove_customer_profile(params)
+            expect(response).not_to_be_null()
+
+    def test_remove_customer_profile_card(self):
+        with HTTMock(paynova_mock):
+            params = {
+                'profileId': '1',
+                'cardId': '1'
+            }
+            response = self.paynova.remove_customer_profile_card(params)
+            expect(response).not_to_be_null()

@@ -129,3 +129,24 @@ class Paynova(object):
             Docs: http://docs.paynova.com/display/API/Refund+Payment
         """
         return self.request('POST', 'transactions/{transactionId}/refund/{totalAmount}', params)
+
+    def get_customer_profile(self, params):
+        """
+            Get Customer Profile
+            Docs: http://docs.paynova.com/display/API/Get+Customer+Profile
+        """
+        return self.request('GET', 'customerprofiles/{profileId}', params)
+
+    def remove_customer_profile(self, params):
+        """
+            Remove Customer Profile
+            Docs: http://docs.paynova.com/display/API/Remove+Customer+Profile
+        """
+        return self.request('DELETE', 'customerprofiles/{profileId}', params)
+
+    def remove_customer_profile_card(self, params):
+        """
+            Remove Customer Profile Card
+            Docs: http://docs.paynova.com/display/API/Remove+Customer+Profile+Card
+        """
+        return self.request('DELETE', 'customerprofiles/{profileId}/cards/{cardId}', params)
