@@ -115,3 +115,17 @@ class Paynova(object):
             Docs: http://docs.paynova.com/display/API/Finalize+Authorization
         """
         return self.request('POST', 'transactions/{transactionId}/finalize/{totalAmount}', params)
+
+    def annul_authorization(self, params):
+        """
+            Annul Authorization
+            Docs: http://docs.paynova.com/display/API/Annul+Authorization
+        """
+        return self.request('POST', 'transactions/{transactionId}/annul/{totalAmount}', params)
+
+    def refund_payment(self, params):
+        """
+            Refund Payment
+            Docs: http://docs.paynova.com/display/API/Refund+Payment
+        """
+        return self.request('POST', 'transactions/{transactionId}/refund/{totalAmount}', params)

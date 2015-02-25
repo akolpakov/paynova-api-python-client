@@ -24,7 +24,7 @@ _ver = sys.version_info
 def paynova_mock(url, request):
     content = None
 
-    def sucecss(content):
+    def success(content=None):
         if not content:
             content = {}
 
@@ -39,14 +39,14 @@ def paynova_mock(url, request):
     # create order
 
     if url[2] == '/api/orders/create':
-        return sucecss({
+        return success({
             'orderId': TestCase.ORDER_ID
         })
 
     # init payment
 
     elif url[2] == '/api/orders/0001/initializePayment':
-        return sucecss({
+        return success({
             'sessionId': TestCase.ORDER_SESSION_ID,
             'url': TestCase.ORDER_URL
         })
@@ -54,9 +54,22 @@ def paynova_mock(url, request):
     # initialize authorization
 
     elif url[2] == '/api/transactions/0001/finalize/100':
-        return sucecss({
+        return success({
             'canFinalizeAgain': True,
             'amountRemainingForFinalize': 50
+        })
+
+    # annul authorization
+
+    elif url[2] == '/api/transactions/0001/annul/100':
+        return success()
+
+    # refund
+
+    elif url[2] == '/api/transactions/0001/refund/100':
+        return success({
+            'transactionId': '0001',
+            'batchId': 'batch'
         })
 
     return {'status_code': 404}
@@ -98,4 +111,24 @@ class PaynovaServicesTestCase(TestCase):
             expect(response).not_to_be_null()
             expect(response.get('canFinalizeAgain')).to_be_true()
             expect(response.get('amountRemainingForFinalize')).to_equal(50)
+
+    def test_annul_authorization(self):
+        with HTTMock(paynova_mock):
+            params = {
+                'transactionId': '0001',
+                'totalAmount': 100
+            }
+            response = self.paynova.annul_authorization(params)
+            expect(response).not_to_be_null()
+
+    def test_refund_payment(self):
+        with HTTMock(paynova_mock):
+            params = {
+                'transactionId': '0001',
+                'totalAmount': 100
+            }
+            response = self.paynova.refund_payment(params)
+            expect(response).not_to_be_null()
+            expect(response.get('transactionId')).to_equal('0001')
+            expect(response.get('batchId')).to_equal('batch')
 
