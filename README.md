@@ -1,8 +1,6 @@
 #Paynova API Python Client
 
-This is an overview of the Paynova API Python Client using [Paynova REST API][] (Aero). More in-depth information can be found in the [Wiki][].
-[Paynova REST API]: http://docs.paynova.com/display/API/Paynova+API+Home
-[Wiki]: https://github.com/Paynova/paynova-api-php-client/wiki
+This is an overview of the Paynova API Python Client using [Paynova REST API](http://docs.paynova.com/display/API/Paynova+API+Home) (Aero). More in-depth information can be found in the [Wiki](https://github.com/Paynova/paynova-api-php-client/wiki).
 
 # Installation
 ```

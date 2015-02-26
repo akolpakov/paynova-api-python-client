@@ -10,6 +10,13 @@
 
 from setuptools import setup, find_packages
 
+try:
+    from pypandoc import convert
+    read_md = lambda f: convert(f, 'rst')
+except ImportError:
+    print("warning: pypandoc module not found, could not convert Markdown to RST")
+    read_md = lambda f: open(f, 'r').read()
+
 tests_require = [
     'mock',
     'nose',
@@ -26,10 +33,8 @@ tests_require = [
 setup(
     name='paynova-api-python-client',
     version='0.1.0',
-    description='Python client for Paynova\'s API.',
-    long_description='''
-Python client for Paynova's API.
-''',
+    description='Python client for Paynova\'s API',
+    long_description=read_md('README.md'),
     keywords='paynova API python client',
     author='Andrey Kolpakov',
     author_email='aakolpakov@gmail.com',
