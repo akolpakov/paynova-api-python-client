@@ -29,8 +29,10 @@ response = client.create_order({
 * [Create detailed order](./examples/create_detailed_order.py)
 * [Initital payment](./examples/initial_payment.py)
 
-### Paynova requester settings
-* **live** - If *live = True* live endpoint will be used
+### For live version
+```python
+client = Paynova('<MERCHANT ID>', '<API Password>', live=True)
+```
 
 ### Errors
 If Paynova return an error, **PaynovaException** will be raised
