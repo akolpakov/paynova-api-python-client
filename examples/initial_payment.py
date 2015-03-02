@@ -17,18 +17,13 @@ try:
         'totalAmount': 10
     })
 
-except PaynovaException as e:
-    # process exception
-    # e.errorNumber, e.statusKey, e.statusMessage, e.errors
-    pass
+    # get order id from response
 
+    orderId = response.get('orderId')
 
-# get order id from response
-# For more information about parameters, see http://docs.paynova.com/display/API/Initialize+Payment
+    # init payment
+    # For more information about parameters, see http://docs.paynova.com/display/API/Initialize+Payment
 
-orderId = response.get('orderId')
-
-try:
     response = client.initialize_payment({
         'orderId': orderId,
         'totalAmount': 10,
@@ -42,10 +37,12 @@ try:
             'urlCallback': 'http://www.url-where-to-receive-event-hooks.com/',    # Change to your URL
         }
     })
+
+    url = response.get('url')
+
+    # redirect to url
+
 except PaynovaException as e:
     # process exception
     # e.errorNumber, e.statusKey, e.statusMessage, e.errors
     pass
-
-
-url = response.get('url')
