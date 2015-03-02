@@ -10,10 +10,9 @@
 
 from preggy import expect
 
-from paynova_api_python_client import Paynova, PaynovaException
+from paynova_api_python_client import Paynova
 from tests.base import TestCase
 from httmock import all_requests, HTTMock
-from requests.exceptions import HTTPError
 
 import sys
 
@@ -22,8 +21,6 @@ _ver = sys.version_info
 
 @all_requests
 def paynova_mock(url, request):
-    content = None
-
     def success(content=None):
         if not content:
             content = {}
