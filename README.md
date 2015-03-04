@@ -6,7 +6,7 @@ This is an overview of the Paynova API Python Client using [Paynova REST API](ht
 ```
 pip install paynova-api-python-client
 ```
-Python 2.7, Python 3.4, PyPy are supported
+Python 2.6, 2.7, 3.3, 3.4, PyPy are supported
 
 # Usage
 Create Paynova client:
