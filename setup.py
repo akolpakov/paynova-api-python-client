@@ -32,7 +32,7 @@ tests_require = [
 
 setup(
     name='paynova-api-python-client',
-    version='0.1.0',
+    version='0.1.1',
     description='Python client for Paynova\'s API',
     long_description=read_md('README.md'),
     keywords='paynova API python client',
