@@ -28,6 +28,7 @@ tests_require = [
     'coveralls',
     'sphinx',
     'httmock',
+    'pypandoc',
 ]
 
 setup(
