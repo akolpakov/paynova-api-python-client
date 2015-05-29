@@ -56,9 +56,9 @@ Install all dependencies:
 ```
 make setup
 ```
-To run test:
+To run tests:
 ```
-make tests
+make test
 ```
 
 # License
