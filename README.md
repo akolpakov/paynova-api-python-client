@@ -56,7 +56,7 @@ Install all dependencies:
 ```
 make setup
 ```
-To run tests:
+To run test:
 ```
 make tests
 ```
