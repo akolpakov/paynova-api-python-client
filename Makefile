@@ -32,3 +32,6 @@ tox:
 
 #docs:
 	#@cd paynova_api_python_client/docs && make html && open _build/html/index.html
+
+upload:
+	@python setup.py sdist upload
